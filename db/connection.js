@@ -7,13 +7,14 @@ const connection = mongoose
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Adjust the timeout as needed
     }
   )
   .then(() => {
     console.log("Database connection successfully established");
   })
   .catch((err) => {
-    console.log("Database connection error: ", err);
+    console.error("Database connection error: ", err);
   });
 
 module.exports = connection;
