@@ -7,7 +7,7 @@ const connection = mongoose
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Adjust the timeout as needed
+      serverSelectionTimeoutMS: 10000, // Adjust the timeout as needed
     }
   )
   .then(() => {
