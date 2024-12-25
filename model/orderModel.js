@@ -30,9 +30,15 @@ const OrderSchema = mongoose.Schema({
         type: String,
         default: 'Pending'
     },
+    paymentType: {
+        type: String,
+        enum: ['BTC', 'Solana', 'Eth', 'USDT'],
+        required: true
+    },
     transactionHash: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     walletId: {
         type: String,
