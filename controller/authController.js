@@ -44,7 +44,7 @@ const getAllUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { _id } = req.body;
 
         const user = await AddModel.findOneAndDelete({ _id });
         if (!user) {
