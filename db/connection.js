@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
+console.log("MONGODB_URI:", process.env.MONGODB_URI); // Add this line for debugging
+
 const connection = mongoose
   .connect(
     process.env.MONGODB_URI,
@@ -18,25 +20,3 @@ const connection = mongoose
   });
 
 module.exports = connection;
-
-
-// const mongoose = require("mongoose");
-// mongoose.set("strictQuery", true);
-
-// const connection = mongoose
-//   .connect(
-//     "mongodb://localhost:27017/AppleDB",
-//     {
-//       useNewUrlParser: true, 
-//       useUnifiedTopology: true,
-//     }
-//   )
-//   .then(() => {
-//     console.log("Database connection successfully established");
-//   })
-//   .catch((err) => {
-//     console.log("Database connection error: ", err);
-//   });
-
-// module.exports = connection;
-
