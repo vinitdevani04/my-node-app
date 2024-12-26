@@ -1,18 +1,25 @@
 {
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.2"
+  },
   "name": "my-node-app",
-  "version": "1.0.0",
   "description": "# My Node App",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinitdevani04/my-node-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.17.1",
-    "mongoose": "^5.12.3"
-  }
+  "bugs": {
+    "url": "https://github.com/vinitdevani04/my-node-app/issues"
+  },
+  "homepage": "https://github.com/vinitdevani04/my-node-app#readme"
 }
