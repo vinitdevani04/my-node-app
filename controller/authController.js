@@ -4,6 +4,11 @@ const register = async (req, res) => {
     try {
         const { email, password, contact } = req.body;
 
+        const existingUser = await AddModel.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists", success: false });
+        }
+
         const newUser = new AddModel({ email, password, contact });
         await newUser.save();
 
