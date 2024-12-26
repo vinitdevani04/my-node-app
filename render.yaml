@@ -7,4 +7,4 @@ services:
     startCommand: 'npm start'
     envVars:
       - key: MONGODB_URI
-        value: 'mongodb+srv://Vinit04:DGFSFM15xAbnOvjV@cluster0.9vaob4b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+        value: "mongodb+srv://Vinit04:DGFSFM15xAbnOvjV@cluster0.mongodb.net/AppleDB?retryWrites=true&w=majority"
