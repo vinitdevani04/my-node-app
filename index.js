@@ -1,18 +1,31 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 
-const conn=require("./db/connection.js");
 app.use(express.json());
 
 const authRoutes = require("./routes/auth_routs.js");
 const orderRoutes = require("./routes/order_routs.js");
 
-
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);
 
+// Log the MONGODB_URI to ensure it's being set correctly
+console.log("MONGODB_URI:", process.env.MONGODB_URI);
 
-app.listen(conn, () => {
-    console.log("Server started at port no :" + port);
+mongoose.set("strictQuery", true);
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => {
+    console.log("Database connection successfully established");
+    app.listen(port, () => {
+        console.log("Server started at port no :" + port);
+    });
+})
+.catch((err) => {
+    console.error("Database connection error: ", err);
 });
