@@ -12,7 +12,7 @@ const register = async (req, res) => {
         const newUser = new AddModel({ email, password, contact });
         await newUser.save();
 
-        res.status(201).json({ message: "User registered successfully", success: true });
+        res.status(201).json({ message: "User registered successfully",data:user, success: true });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -27,7 +27,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials", success: false });
         }
 
-        res.status(200).json({ message: "Login successful", success: true });
+        res.status(200).json({ message: "Login successful",data:user, success: true });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -46,7 +46,7 @@ const deleteUser = async (req, res) => {
     try {
         const { email } = req.body;
 
-        const user = await AddModel.findOneAndDelete({ email });
+        const user = await AddModel.findOneAndDelete({ _id });
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
         }
