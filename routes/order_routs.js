@@ -3,10 +3,11 @@ const orderRoutes = express.Router();
 const orderController = require("../controller/orderController");
 
 orderRoutes.post("/create", orderController.createOrder);
-orderRoutes.get("/getAllOrders", orderController.getAllOrders);
+orderRoutes.get("/orders", orderController.getAllOrders);
 orderRoutes.get("/:id", orderController.getOrderById);
-orderRoutes.put("/:id", orderController.updateOrderStatus);
 orderRoutes.delete("/:id", orderController.deleteOrder);
-orderRoutes.patch("/:id/status", orderController.changeOrderStatus); // New route for changing order status
+orderRoutes.patch("/:id/oderstatus", orderController.changeOrderStatus);
+orderRoutes.patch("/:id/verifiedPayment", orderController.updateVerifiedPaymentStatus);
+orderRoutes.get("/search", orderController.getOrdersByEmailAndPhone);
 
 module.exports = orderRoutes;

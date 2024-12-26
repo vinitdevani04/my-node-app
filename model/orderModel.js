@@ -1,11 +1,23 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const OrderSchema = mongoose.Schema({
-    product: {
+const orderSchema = new mongoose.Schema({
+    phone: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },
     productName: {
+        type: String,
+        required: true
+    },
+    image: {
+        type: String,
+        required: true
+    },
+    color: {
         type: String,
         required: true
     },
@@ -21,19 +33,18 @@ const OrderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
-    },
-    status: {
-        type: String,
-        default: 'Pending'
-    },
     paymentType: {
         type: String,
         enum: ['BTC', 'Solana', 'Eth', 'USDT'],
         required: true
+    },
+    orderStatus: {
+        type: String,
+        default: 'Pending'
+    },
+    verifiedPayment: {
+        type: Boolean,
+        default: false
     },
     transactionHash: {
         type: String,
@@ -46,4 +57,4 @@ const OrderSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Orders', OrderSchema);
+module.exports = mongoose.model('Orders', orderSchema);
