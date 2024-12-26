@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
-console.log("MONGODB_URI:", process.env.MONGODB_URI); // Add this line for debugging
+console.log("Connection.js >>>>> >>>> MONGODB_URI:", process.env.MONGODB_URI); // Add this line for debugging
 
 const connection = mongoose
   .connect(
     process.env.MONGODB_URI,
     {
-      useNewUrlParser: true, 
+      useNewUrlParser: true,
       useUnifiedTopology: true,
     }
   )

@@ -13,9 +13,6 @@ const orderRoutes = require("./routes/order_routs.js");
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);
 
-// Log the MONGODB_URI to ensure it's being set correctly
-console.log("MONGODB_URI:", process.env.MONGODB_URI);
-
 mongoose.set("strictQuery", true);
 
 mongoose.connect(process.env.MONGODB_URI, {
