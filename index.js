@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+require('dotenv').config();
 const port = 3000;
 
 app.use(express.json());
+console.log("MONGODB_URI:>>>>>>>>>", process.env.MONGODB_URI);
 
 const authRoutes = require("./routes/auth_routs.js");
 const orderRoutes = require("./routes/order_routs.js");
