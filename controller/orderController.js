@@ -36,7 +36,7 @@ const getOrderById = async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: "Order not found", success: false });
         }
-        
+
         res.status(200).json({ data: order });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
@@ -81,17 +81,21 @@ const updateVerifiedPaymentStatus = async (req, res) => {
     }
 };
 
-const getOrdersByEmailAndPhone = async (req, res) => {
+const getOrdersByEmail = async (req, res) => {
     try {
-        const { email, phone } = req.query;
-        if (!email || !phone) {
-            return res.status(400).json({ message: "Email and phone are required", success: false });
-        }
-        const orders = await OrderModel.find({ email, phone });
-        res.status(200).json({ data: orders });
+        const email = req.body.email;
+
+        // if (!email) {
+        //     return res.status(400).json({ message: "Email and phone are required", success: false });
+        // }
+        console.log("Query params:>>>>>",  email);
+
+        const orders = await OrderModel.find({ email });
+        res.status(200).json( orders );
     } catch (error) {
+        console.error("Error fetching orders by email and phone:", error);
         res.status(500).json({ message: error.message, success: false });
     }
 };
-    
-module.exports = { createOrder, getAllOrders, getOrderById, deleteOrder, changeOrderStatus, getOrdersByEmailAndPhone, updateVerifiedPaymentStatus };
+
+module.exports = { createOrder, getAllOrders, getOrderById, deleteOrder, changeOrderStatus, getOrdersByEmail, updateVerifiedPaymentStatus };

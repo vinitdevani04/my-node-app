@@ -8,6 +8,6 @@ orderRoutes.get("/:id", orderController.getOrderById);
 orderRoutes.delete("/:id", orderController.deleteOrder);
 orderRoutes.patch("/:id/oderstatus", orderController.changeOrderStatus);
 orderRoutes.patch("/:id/verifiedPayment", orderController.updateVerifiedPaymentStatus);
-orderRoutes.get("/search", orderController.getOrdersByEmailAndPhone);
+orderRoutes.post("/search", orderController.getOrdersByEmail);
 
 module.exports = orderRoutes;
