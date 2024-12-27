@@ -11,8 +11,8 @@ const register = async (req, res) => {
 
         const newUser = new AddModel({ email, password, contact });
         await newUser.save();
-
-        res.status(201).json({ message: "User registered successfully",data:user, success: true });
+        console.log('User registered successfully' + newUser);
+        res.status(200).json({ message: "User registered successfully", success: true });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -27,7 +27,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials", success: false });
         }
 
-        res.status(200).json({ message: "Login successful",data:user, success: true });
+        res.status(200).json({ message: "Login successful", data: user, success: true });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -57,4 +57,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getAllUser ,deleteUser};
+module.exports = { register, login, getAllUser, deleteUser };
