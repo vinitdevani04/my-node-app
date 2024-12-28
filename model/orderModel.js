@@ -40,11 +40,11 @@ const orderSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        // default: 'Pending'
+        default: 'Pending'
     },
     verifiedPayment: {
         type: Boolean,
-        // default: false
+        default: false
     },
     transactionHash: {
         type: String,
@@ -54,6 +54,22 @@ const orderSchema = new mongoose.Schema({
     walletId: {
         type: String,
         // required: true
+    },
+    address: {
+        type: String,
+        // required: true
+    },
+    city: {
+        type: String,
+        // required: true
+    },
+    pincode: {
+        type: String,
+        // required: true
+    },
+    orderDateTime: {
+        type: Date,
+        default: Date.now
     }
 });
 

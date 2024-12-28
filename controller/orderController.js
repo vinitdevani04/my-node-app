@@ -2,18 +2,17 @@ const OrderModel = require("../model/orderModel");
 
 const createOrder = async (req, res) => {
     try {
-        const { phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId } = req.body;
+        const { phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId, address, city, pincode } = req.body;
 
         const existingOrder = await OrderModel.findOne({ transactionHash });
         if (existingOrder) {
             return res.status(400).json({ message: "Transaction hash must be unique", success: false });
         }
 
-        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId });
+        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId, address, city, pincode });
         await newOrder.save();
 
         const allUserOrders = await OrderModel.find({ email, phone });
-
 
         res.status(201).json({ message: "Order created successfully. Please wait for payment verification.", details: allUserOrders, success: true });
     } catch (error) {
