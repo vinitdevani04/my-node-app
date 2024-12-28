@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
     },
     networkType: {
         type: String,
-        // required: true
+        required: true
     },
     orderStatus: {
         type: String,
