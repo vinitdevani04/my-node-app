@@ -2,14 +2,14 @@ const OrderModel = require("../model/orderModel");
 
 const createOrder = async (req, res) => {
     try {
-        const { phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId, address, city, pincode } = req.body;
+        const { phone, email, productName, image, color, price, storage, quantity, paymentType, networkType, transactionHash, walletId, address, city, pincode } = req.body;
 
         const existingOrder = await OrderModel.findOne({ transactionHash });
         if (existingOrder) {
             return res.status(400).json({ message: "Transaction hash must be unique", success: false });
         }
 
-        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, transactionHash, walletId, address, city, pincode });
+        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, networkType, transactionHash, walletId, address, city, pincode });
         await newOrder.save();
 
         const allUserOrders = await OrderModel.find({ email, phone });
@@ -87,10 +87,10 @@ const getOrdersByEmail = async (req, res) => {
         // if (!email) {
         //     return res.status(400).json({ message: "Email and phone are required", success: false });
         // }
-        console.log("Query params:>>>>>",  email);
+        console.log("Query params:>>>>>", email);
 
         const orders = await OrderModel.find({ email });
-        res.status(200).json( orders );
+        res.status(200).json(orders);
     } catch (error) {
         console.error("Error fetching orders by email and phone:", error);
         res.status(500).json({ message: error.message, success: false });
