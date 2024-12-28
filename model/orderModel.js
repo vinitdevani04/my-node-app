@@ -38,6 +38,10 @@ const orderSchema = new mongoose.Schema({
         enum: ['BTC', 'SOLANA', 'ETH', 'USDT'],
         required: true
     },
+    networkType: {
+        type: String,
+        required: true
+    },
     orderStatus: {
         type: String,
         default: 'Pending'
