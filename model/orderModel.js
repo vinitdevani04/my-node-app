@@ -3,57 +3,57 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
     phone: {
         type: String,
-        required: true
+        // required: true
     },
     email: {
         type: String,
-        required: true
+        // required: true
     },
     productName: {
         type: String,
-        required: true
+        // required: true
     },
     image: {
         type: String,
-        required: true
+        // required: true
     },
     color: {
         type: String,
-        required: true
+        // required: true
     },
     price: {
         type: Number,
-        required: true
+        // required: true
     },
     storage: {
         type: String,
-        required: true
+        // required: true
     },
     quantity: {
         type: Number,
-        required: true
+        // required: true
     },
     paymentType: {
         type: String,
-        enum: ['BTC', 'Solana', 'Eth', 'USDT'],
-        required: true
+        enum: ['BTC', 'SOLANA', 'ETH', 'USDT'],
+        // required: true
     },
     orderStatus: {
         type: String,
-        default: 'Pending'
+        // default: 'Pending'
     },
     verifiedPayment: {
         type: Boolean,
-        default: false
+        // default: false
     },
     transactionHash: {
         type: String,
-        required: true,
+        // required: true,
         unique: true
     },
     walletId: {
         type: String,
-        required: true
+        // required: true
     }
 });
 
