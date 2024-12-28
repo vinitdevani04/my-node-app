@@ -9,7 +9,7 @@ const createOrder = async (req, res) => {
             return res.status(400).json({ message: "Transaction hash must be unique", success: false });
         }
 
-        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, networkType, transactionHash, walletId, address, city, pincode });
+        const newOrder = new OrderModel({ phone, email, productName, image, color, price, storage, quantity, paymentType, networkType, transactionHash, walletId, address, city, pincode, orderDateTime: new Date() });
         await newOrder.save();
 
         const allUserOrders = await OrderModel.find({ email, phone });
