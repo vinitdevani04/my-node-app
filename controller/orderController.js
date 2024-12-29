@@ -61,7 +61,7 @@ const changeOrderStatus = async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: "Order not found", success: false });
         }
-        res.status(200).json({ message: "Order status changed successfully", success: true });
+        res.status(200).json({ message: "Order status changed successfully", success: true, data: order });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -83,10 +83,6 @@ const updateVerifiedPaymentStatus = async (req, res) => {
 const getOrdersByEmail = async (req, res) => {
     try {
         const email = req.body.email;
-
-        // if (!email) {
-        //     return res.status(400).json({ message: "Email and phone are required", success: false });
-        // }
         console.log("Query params:>>>>>", email);
 
         const orders = await OrderModel.find({ email });
