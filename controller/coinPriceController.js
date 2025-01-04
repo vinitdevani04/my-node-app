@@ -4,7 +4,6 @@ const axios = require('axios');
 const createOrUpdateCoinPrice = async (req, res) => {
     try {
         const { network, coin, price } = req.body;
-
         const existingCoinPrice = await CoinPrice.findOne({ network, coin });
         if (existingCoinPrice) {
             existingCoinPrice.price = price;
