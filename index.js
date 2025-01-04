@@ -23,12 +23,12 @@ mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-.then(() => {
-    console.log("Database connection successfully established");
-    app.listen(port, () => {
-        console.log("Server started at port no :" + port);
+    .then(() => {
+        console.log("Database connection successfully established");
+        app.listen(port, () => {
+            console.log("Server started at port no :" + port);
+        });
+    })
+    .catch((err) => {
+        console.error("Database connection error: ", err);
     });
-})
-.catch((err) => {
-    console.error("Database connection error: ", err);
-});

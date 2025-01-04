@@ -1,4 +1,4 @@
-const CoinPrice = require('../models/coinPriceModel');
+const CoinPrice = require('../model/coinPriceModel');
 const axios = require('axios');
 
 const createOrUpdateCoinPrice = async (req, res) => {
