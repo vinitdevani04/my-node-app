@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 
-const orderSchema = new mongoose.Schema({
-    phone: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
+const productSchema = new mongoose.Schema({
     productName: {
         type: String,
         required: true
@@ -32,7 +24,19 @@ const orderSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true
+    }
+});
+
+const orderSchema = new mongoose.Schema({
+    phone: {
+        type: String,
+        required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
+    products: [productSchema], // Array of products
     paymentType: {
         type: String,
         enum: ['BTC', 'SOLANA', 'ETH', 'USDT'],
