@@ -13,6 +13,10 @@ const AddSchem = mongoose.Schema({
         type: String,
         required: true
     },
+    totalWalletAmount: {
+        type: Number,
+        default: 0
+    }
 })
 
 module.exports = mongoose.model('Users', AddSchem)
