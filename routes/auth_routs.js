@@ -9,5 +9,6 @@ authRoutes.delete('/delete', authController.deleteUser);
 authRoutes.post('/deposit', authController.walletDeposit);
 authRoutes.post('/depositverified', authController.verifyDeposit);
 authRoutes.post('/getAllTransection', authController.getTransactions);
+authRoutes.post('/getAllUserTransactions', authController.getAllUserTransactions);
 
 module.exports = authRoutes;

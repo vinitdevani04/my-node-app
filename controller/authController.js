@@ -129,4 +129,19 @@ const getTransactions = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getAllUser, deleteUser, getTransactions, walletDeposit, verifyDeposit };
+const getAllUserTransactions = async (req, res) => {
+    try {
+        const users = await AddModel.find({}, { email: 1, transactions: 1 });
+
+        if (!users.length) {
+            return res.status(404).json({ message: "No users found", success: false });
+        }
+
+        res.status(200).json({ message: "All user transactions retrieved", success: true, data: users });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
+
+module.exports = { register, login, getAllUser, deleteUser, getTransactions, walletDeposit, verifyDeposit , getAllUserTransactions};
