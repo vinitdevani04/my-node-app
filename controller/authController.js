@@ -123,7 +123,7 @@ const getTransactions = async (req, res) => {
             return res.status(404).json({ message: "User not found", success: false });
         }
 
-        res.status(200).json({ message: "Transactions retrieved", success: true, transactions: user.transactions });
+        res.status(200).json({transactions: user.transactions });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
@@ -137,7 +137,7 @@ const getAllUserTransactions = async (req, res) => {
             return res.status(404).json({ message: "No users found", success: false });
         }
 
-        res.status(200).json({ message: "All user transactions retrieved", success: true, data: users });
+        res.status(200).json({ users });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
