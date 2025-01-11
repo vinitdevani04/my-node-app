@@ -12,10 +12,13 @@ console.log("MONGODB_URI:>>>>>>>>>", process.env.MONGODB_URI);
 const authRoutes = require("./routes/auth_routs.js");
 const orderRoutes = require("./routes/order_routs.js");
 const coinPriceRoutes = require("./routes/coinPriceRoutes.js");
+const walletRoutes = require("./routes/walletRoutes.js");
 
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);
 app.use("/api", coinPriceRoutes);
+app.use("/api/wallet", walletRoutes);
+
 
 mongoose.set("strictQuery", true);
 
