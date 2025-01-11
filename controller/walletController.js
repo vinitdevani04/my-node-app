@@ -14,14 +14,13 @@ const addTransaction = async (req, res) => {
         }
         const newWallet = new Wallet({
             email,
-            transaction: {
-                transactionHash,
-                walletAddress,
-                networkName,
-                coinName,
-                amount,
-                verified: false
-            }
+            transactionHash,
+            walletAddress,
+            networkName,
+            coinName,
+            amount,
+            verified: false
+
         });
 
         await newWallet.save();
