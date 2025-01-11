@@ -42,14 +42,14 @@ const verifyTransaction = async (req, res) => {
         }
 
         // Find the wallet with the specific transaction hash
-        const wallet = await Wallet.findOne({ "transaction.transactionHash": transactionHash });
+        const wallet = await Wallet.findOne({ "transactionHash": transactionHash });
         if (!wallet) {
             return res.status(404).json({ message: "Transaction not found", success: false });
         }
 
         // Update the transaction
-        wallet.transaction.verified = true;
-        wallet.transaction.amount = newAmount;
+        wallet.verified = true;
+        wallet.amount = newAmount;
 
         await wallet.save();
 
