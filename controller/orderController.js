@@ -1,5 +1,5 @@
 const OrderModel = require("../model/orderModel");
-const Wallet = require('../model/walletModel');
+const WalletModel = require("../model/walletModel");
 
 const createOrder = async (req, res) => {
     try {
@@ -17,40 +17,48 @@ const createOrder = async (req, res) => {
             pincode
         } = req.body;
 
-        // Validate required fields for wallet payment
+        console.log("Request Body:", req.body);
+
         if (isWalletPayment) {
-            if (!walletId || !address || !city || !pincode) {
+            if (!phone || !email || !products || !address || !city || !pincode) {
                 return res.status(400).json({ message: "Missing required fields for wallet payment." });
             }
         } else {
-            // Validate required fields for other payment methods
             if (!paymentType || !networkType || !transactionHash || !walletId || !address || !city || !pincode) {
                 return res.status(400).json({ message: "Missing required fields for non-wallet payment." });
             }
 
-            // Check if transactionHash is unique across all collections
+            console.log("Checking transactionHash:", transactionHash);
             const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
+            console.log("Transaction hash exists:", isTransactionHashExists);
+
             if (isTransactionHashExists) {
-                return res.status(400).json({ message: "Transaction hash already exists." });
+                return res.status(400).json({ message: "Transaction hash already exists in the database." });
             }
         }
 
-        // Create a new order
-        const newOrder = new Order({
+        const orderData = {
             phone,
             email,
             products,
-            paymentType: isWalletPayment ? undefined : paymentType, // Exclude paymentType for wallet payment
-            networkType: isWalletPayment ? undefined : networkType, // Exclude networkType for wallet payment
-            transactionHash: isWalletPayment ? undefined : transactionHash, // Exclude transactionHash for wallet payment
-            walletId,
-            isWalletPayment: isWalletPayment || false, // Default to false if not provided
+            isWalletPayment: isWalletPayment || false,
             address,
             city,
-            pincode
-        });
+            pincode,
+            orderStatus: "Pending",
+            verifiedPayment: false,
+            orderDateTime: Date.now()
+        };
 
-        // Save the order in the database
+        if (!isWalletPayment) {
+            orderData.paymentType = paymentType;
+            orderData.walletId = walletId;
+            orderData.networkType = networkType;
+            orderData.transactionHash = transactionHash;
+        }
+
+        console.log("Creating order with data:", orderData);
+        const newOrder = new OrderModel(orderData);
         const savedOrder = await newOrder.save();
 
         res.status(201).json({
@@ -58,25 +66,33 @@ const createOrder = async (req, res) => {
             order: savedOrder
         });
     } catch (error) {
+        console.error("Error creating order:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
 
+// Helper method to check if `transactionHash` exists across collections
 const checkTransactionHashExists = async (transactionHash) => {
-    // Check in Orders collection
-    const existingInOrders = await Order.findOne({ transactionHash });
-    if (existingInOrders) {
-        return true;
-    }
+    try {
 
-    // Check in Wallet collection
-    const existingInWallet = await Wallet.findOne({ transactionHash });
-    if (existingInWallet) {
-        return true;
+
+        // Check in Orders collection
+        const existingInOrders = await OrderModel.findOne({ transactionHash });
+        if (existingInOrders) {
+            return true;
+        }
+
+        // Check in Wallet collection
+        const existingInWallet = await WalletModel.findOne({ transactionHash });
+        if (existingInWallet) {
+            return true;
+        }
+
+        return false; // `transactionHash` is unique
+    } catch (error) {
+        throw new Error("Error while checking transaction hash: " + error.message);
     }
-    
-    return false;
 };
 
 

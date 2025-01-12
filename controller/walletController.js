@@ -20,11 +20,9 @@ const addTransaction = async (req, res) => {
             coinName,
             amount,
             verified: false
-
         });
 
         await newWallet.save();
-
         res.status(201).json({ message: "Transaction created successfully", success: true, data: newWallet });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
@@ -43,7 +41,7 @@ const checkTransactionHashExists = async (transactionHash) => {
     if (existingInWallet) {
         return true;
     }
-    
+
     return false;
 };
 
