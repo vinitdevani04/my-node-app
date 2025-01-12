@@ -55,7 +55,8 @@ const orderSchema = new mongoose.Schema({
         required: function () {
             return !this.isWalletPayment; // Required only if wallet payment is false
         },
-        unique: true
+        unique: true,
+        sparse: true
     },
     walletId: {
         type: String,

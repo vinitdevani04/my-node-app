@@ -17,17 +17,18 @@ const createOrder = async (req, res) => {
             pincode
         } = req.body;
 
-        console.log("Request Body:", req.body);
-
         if (isWalletPayment) {
+            // Validate required fields for wallet payment
             if (!phone || !email || !products || !address || !city || !pincode) {
                 return res.status(400).json({ message: "Missing required fields for wallet payment." });
             }
         } else {
+            // Validate required fields for non-wallet payment
             if (!paymentType || !networkType || !transactionHash || !walletId || !address || !city || !pincode) {
                 return res.status(400).json({ message: "Missing required fields for non-wallet payment." });
             }
 
+            // Check for duplicate transactionHash
             console.log("Checking transactionHash:", transactionHash);
             const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
             console.log("Transaction hash exists:", isTransactionHashExists);
@@ -37,6 +38,7 @@ const createOrder = async (req, res) => {
             }
         }
 
+        // Prepare order data
         const orderData = {
             phone,
             email,
@@ -51,6 +53,7 @@ const createOrder = async (req, res) => {
         };
 
         if (!isWalletPayment) {
+            // Include payment-related fields only for non-wallet payments
             orderData.paymentType = paymentType;
             orderData.walletId = walletId;
             orderData.networkType = networkType;
@@ -72,7 +75,7 @@ const createOrder = async (req, res) => {
 };
 
 
-// Helper method to check if `transactionHash` exists across collections
+
 const checkTransactionHashExists = async (transactionHash) => {
     try {
 
