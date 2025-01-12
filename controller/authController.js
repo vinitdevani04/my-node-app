@@ -31,7 +31,7 @@ const walletUpdate = async (req, res) => {
             return res.status(404).json({ message: "User not found.", success: false });
         }
 
-        existingUser.totalWalletAmount += walletAmount;
+        existingUser.totalWalletAmount = walletAmount;
         await existingUser.save();
 
         // Respond with the updated user details

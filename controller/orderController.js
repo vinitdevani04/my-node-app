@@ -74,8 +74,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-
-
 const checkTransactionHashExists = async (transactionHash) => {
     try {
 
