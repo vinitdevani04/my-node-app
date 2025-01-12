@@ -40,28 +40,30 @@ const orderSchema = new mongoose.Schema({
     paymentType: {
         type: String,
         enum: ['BTC', 'SOLANA', 'ETH', 'USDT'],
-        required: true
+        required: function () {
+            return !this.isWalletPayment; // Required only if wallet payment is false
+        }
     },
     networkType: {
         type: String,
-        required: true
-    },
-    orderStatus: {
-        type: String,
-        default: 'Pending'
-    },
-    verifiedPayment: {
-        type: Boolean,
-        default: false
+        required: function () {
+            return !this.isWalletPayment; // Required only if wallet payment is false
+        }
     },
     transactionHash: {
         type: String,
-        required: true,
+        required: function () {
+            return !this.isWalletPayment; // Required only if wallet payment is false
+        },
         unique: true
     },
     walletId: {
         type: String,
         required: true
+    },
+    isWalletPayment: {
+        type: Boolean,
+        default: false // Default to false for non-wallet payments
     },
     address: {
         type: String,
@@ -78,6 +80,14 @@ const orderSchema = new mongoose.Schema({
     orderDateTime: {
         type: Date,
         default: Date.now
+    },
+    orderStatus: {
+        type: String,
+        default: 'Pending'
+    },
+    verifiedPayment: {
+        type: Boolean,
+        default: false
     }
 });
 

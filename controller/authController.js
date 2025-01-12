@@ -18,6 +18,36 @@ const register = async (req, res) => {
     }
 };
 
+const walletUpdate = async (req, res) => {
+    try {
+        const { email, walletAmount } = req.body;
+
+        if (!email || walletAmount === undefined) {
+            return res.status(400).json({ message: "Email and walletAmount are required.", success: false });
+        }
+        const existingUser = await AddModel.findOne({ email });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found.", success: false });
+        }
+
+        existingUser.totalWalletAmount += walletAmount;
+        await existingUser.save();
+
+        // Respond with the updated user details
+        res.status(200).json({
+            message: "Wallet amount updated successfully.",
+            success: true,
+            updatedUser: {
+                email: existingUser.email,
+                totalWalletAmount: existingUser.totalWalletAmount
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+};
+
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -57,4 +87,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getAllUser, deleteUser };
+module.exports = { register, login, getAllUser, deleteUser,walletUpdate };

@@ -1,47 +1,84 @@
 const OrderModel = require("../model/orderModel");
+const Wallet = require('../model/walletModel');
 
 const createOrder = async (req, res) => {
     try {
-        const { phone, email, products, paymentType, networkType, transactionHash, walletId, address, city, pincode } = req.body;
-
-        // Ensure products is an array
-        const productsArray = Array.isArray(products) ? products : [products];
-
-        // Check for duplicate transaction hash
-        const existingOrder = await OrderModel.findOne({ transactionHash });
-        if (existingOrder) {
-            return res.status(400).json({ message: "Transaction hash must be unique", success: false });
-        }
-
-        // Create a new order
-        const newOrder = new OrderModel({
+        const {
             phone,
             email,
-            products: productsArray,
+            products,
             paymentType,
             networkType,
             transactionHash,
             walletId,
+            isWalletPayment,
             address,
             city,
-            pincode,
-            orderDateTime: new Date()
+            pincode
+        } = req.body;
+
+        // Validate required fields for wallet payment
+        if (isWalletPayment) {
+            if (!walletId || !address || !city || !pincode) {
+                return res.status(400).json({ message: "Missing required fields for wallet payment." });
+            }
+        } else {
+            // Validate required fields for other payment methods
+            if (!paymentType || !networkType || !transactionHash || !walletId || !address || !city || !pincode) {
+                return res.status(400).json({ message: "Missing required fields for non-wallet payment." });
+            }
+
+            // Check if transactionHash is unique across all collections
+            const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
+            if (isTransactionHashExists) {
+                return res.status(400).json({ message: "Transaction hash already exists." });
+            }
+        }
+
+        // Create a new order
+        const newOrder = new Order({
+            phone,
+            email,
+            products,
+            paymentType: isWalletPayment ? undefined : paymentType, // Exclude paymentType for wallet payment
+            networkType: isWalletPayment ? undefined : networkType, // Exclude networkType for wallet payment
+            transactionHash: isWalletPayment ? undefined : transactionHash, // Exclude transactionHash for wallet payment
+            walletId,
+            isWalletPayment: isWalletPayment || false, // Default to false if not provided
+            address,
+            city,
+            pincode
         });
 
-        await newOrder.save();
-
-        // Fetch all orders for the user
-        const Orders = await OrderModel.find({ email, phone });
+        // Save the order in the database
+        const savedOrder = await newOrder.save();
 
         res.status(201).json({
-            message: "Order created successfully. Please wait for payment verification.",
-            details: Orders,
-            success: true
+            message: "Order created successfully.",
+            order: savedOrder
         });
     } catch (error) {
-        res.status(500).json({ message: error.message, success: false });
+        res.status(500).json({ message: error.message });
     }
 };
+
+
+const checkTransactionHashExists = async (transactionHash) => {
+    // Check in Orders collection
+    const existingInOrders = await Order.findOne({ transactionHash });
+    if (existingInOrders) {
+        return true;
+    }
+
+    // Check in Wallet collection
+    const existingInWallet = await Wallet.findOne({ transactionHash });
+    if (existingInWallet) {
+        return true;
+    }
+    
+    return false;
+};
+
 
 const getAllOrders = async (req, res) => {
     try {

@@ -8,9 +8,9 @@ const addTransaction = async (req, res) => {
         if (!email || !transactionHash || !walletAddress || !networkName || !coinName) {
             return res.status(400).json({ message: "All fields are required", success: false });
         }
-        const existingTransaction = await Wallet.findOne({ "transactionHash": transactionHash });
-        if (existingTransaction) {
-            return res.status(400).json({ message: "Transaction hash already exists", success: false });
+        const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
+        if (isTransactionHashExists) {
+            return res.status(400).json({ message: "Transaction hash already exists." });
         }
         const newWallet = new Wallet({
             email,
@@ -31,6 +31,21 @@ const addTransaction = async (req, res) => {
     }
 };
 
+const checkTransactionHashExists = async (transactionHash) => {
+    // Check in Orders collection
+    const existingInOrders = await Order.findOne({ transactionHash });
+    if (existingInOrders) {
+        return true;
+    }
+
+    // Check in Wallet collection
+    const existingInWallet = await Wallet.findOne({ transactionHash });
+    if (existingInWallet) {
+        return true;
+    }
+    
+    return false;
+};
 
 const verifyTransaction = async (req, res) => {
     try {
