@@ -47,11 +47,11 @@ const checkTransactionHashExists = async (transactionHash) => {
 
 const verifyTransaction = async (req, res) => {
     try {
-        const { transactionHash, newAmount } = req.body;
+        const { transactionHash } = req.body; 
 
         // Validate input
-        if (!transactionHash || newAmount === undefined) {
-            return res.status(400).json({ message: "Transaction hash and new amount are required", success: false });
+        if (!transactionHash) {
+            return res.status(400).json({ message: "Transaction hash is required", success: false });
         }
 
         // Find the wallet with the specific transaction hash
@@ -60,9 +60,8 @@ const verifyTransaction = async (req, res) => {
             return res.status(404).json({ message: "Transaction not found", success: false });
         }
 
-        // Update the transaction
+        // Update only the verified status
         wallet.verified = true;
-        wallet.amount = newAmount;
 
         await wallet.save();
 
@@ -71,6 +70,7 @@ const verifyTransaction = async (req, res) => {
         res.status(500).json({ message: error.message, success: false });
     }
 };
+
 
 
 // Get all transactions for a user
