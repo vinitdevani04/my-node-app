@@ -3,39 +3,20 @@ const WalletModel = require("../model/walletModel");
 
 const createOrder = async (req, res) => {
     try {
-        const {
-            phone,
-            email,
-            products,
-            paymentType,
-            networkType,
-            transactionHash,
-            walletId,
-            isWalletPayment,
-            address,
-            city,
-            pincode
-        } = req.body;
+        const { phone, email, products, paymentType, networkType, transactionHash, address, city, pincode } = req.body;
 
-        if (isWalletPayment) {
-            // Validate required fields for wallet payment
-            if (!phone || !email || !products || !address || !city || !pincode) {
-                return res.status(400).json({ message: "Missing required fields for wallet payment." });
-            }
-        } else {
-            // Validate required fields for non-wallet payment
-            if (!paymentType || !networkType || !transactionHash || !walletId || !address || !city || !pincode) {
-                return res.status(400).json({ message: "Missing required fields for non-wallet payment." });
-            }
+        // Validate required fields
+        if (!phone || !email || !products || !paymentType || !networkType || !transactionHash || !address || !city || !pincode) {
+            return res.status(400).json({ message: "All required fields must be provided." });
+        }
 
-            // Check for duplicate transactionHash
-            console.log("Checking transactionHash:", transactionHash);
-            const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
-            console.log("Transaction hash exists:", isTransactionHashExists);
+        // Check for duplicate transactionHash
+        console.log("Checking transactionHash:", transactionHash);
+        const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
+        console.log("Transaction hash exists:", isTransactionHashExists);
 
-            if (isTransactionHashExists) {
-                return res.status(400).json({ message: "Transaction hash already exists in the database." });
-            }
+        if (isTransactionHashExists) {
+            return res.status(400).json({ message: "Transaction hash already exists in the database." });
         }
 
         // Prepare order data
@@ -43,7 +24,9 @@ const createOrder = async (req, res) => {
             phone,
             email,
             products,
-            isWalletPayment: isWalletPayment || false,
+            paymentType,
+            networkType,
+            transactionHash,
             address,
             city,
             pincode,
@@ -51,14 +34,6 @@ const createOrder = async (req, res) => {
             verifiedPayment: false,
             orderDateTime: Date.now()
         };
-
-        if (!isWalletPayment) {
-            // Include payment-related fields only for non-wallet payments
-            orderData.paymentType = paymentType;
-            orderData.walletId = walletId;
-            orderData.networkType = networkType;
-            orderData.transactionHash = transactionHash;
-        }
 
         console.log("Creating order with data:", orderData);
         const newOrder = new OrderModel(orderData);
@@ -74,17 +49,16 @@ const createOrder = async (req, res) => {
     }
 };
 
+
 const checkTransactionHashExists = async (transactionHash) => {
     try {
-
-
         // Check in Orders collection
         const existingInOrders = await OrderModel.findOne({ transactionHash });
         if (existingInOrders) {
             return true;
         }
 
-        // Check in Wallet collection
+        // Check in Wallet collection (if wallet-related transactions still exist)
         const existingInWallet = await WalletModel.findOne({ transactionHash });
         if (existingInWallet) {
             return true;
@@ -95,7 +69,6 @@ const checkTransactionHashExists = async (transactionHash) => {
         throw new Error("Error while checking transaction hash: " + error.message);
     }
 };
-
 
 const getAllOrders = async (req, res) => {
     try {
