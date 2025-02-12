@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
     products: [productSchema], // Array of products
     paymentType: { type: String, enum: ['BTC', 'SOLANA', 'ETH', 'USDT'], },
     networkType: { type: String, },
-    transactionHash: { type: String, , unique: true, sparse: true },
+    transactionHash: { type: String,  unique: true, sparse: true },
     address: { type: String, },
     city: { type: String, },
     pincode: { type: String, },
