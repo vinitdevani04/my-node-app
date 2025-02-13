@@ -3,7 +3,7 @@ const WalletModel = require("../model/walletModel");
 
 const createOrder = async (req, res) => {
     try {
-        const { phone, email, products, address, city, pincode } = req.body;
+        const { phone, email, products, address, city, pincode,paymentID } = req.body;
 
         // Validate required fields
         if (!phone || !email || !products || !address || !city || !pincode) {
