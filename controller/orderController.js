@@ -3,36 +3,25 @@ const WalletModel = require("../model/walletModel");
 
 const createOrder = async (req, res) => {
     try {
-        const { phone, email, products, paymentType, networkType, transactionHash, address, city, pincode } = req.body;
+        const { phone, email, products, address, city, pincode } = req.body;
 
         // Validate required fields
-        if (!phone || !email || !products || !paymentType || !networkType || !transactionHash || !address || !city || !pincode) {
+        if (!phone || !email || !products || !address || !city || !pincode) {
             return res.status(400).json({ message: "All required fields must be provided." });
         }
 
-        // Check for duplicate transactionHash
-        console.log("Checking transactionHash:", transactionHash);
-        const isTransactionHashExists = await checkTransactionHashExists(transactionHash);
-        console.log("Transaction hash exists:", isTransactionHashExists);
-
-        if (isTransactionHashExists) {
-            return res.status(400).json({ message: "Transaction hash already exists in the database." });
-        }
-
-        // Prepare order data
+        // Prepare order data (No paymentType, networkType, transactionHash)
         const orderData = {
             phone,
             email,
             products,
-            paymentType,
-            networkType,
-            transactionHash,
             address,
             city,
             pincode,
             orderStatus: "Pending",
-            verifiedPayment: false,
-            orderDateTime: Date.now()
+            verifiedPayment: true,
+            orderDateTime: Date.now(),
+            paymentID 
         };
 
         console.log("Creating order with data:", orderData);
