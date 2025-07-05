@@ -1,0 +1,22 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "description": "# My Node App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "moment": "^2.30.1",
+    "mongoose": "^8.15.2",
+    "nodemailer": "^7.0.4"
+  }
+}
