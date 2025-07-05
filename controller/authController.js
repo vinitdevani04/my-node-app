@@ -139,5 +139,27 @@ const deleteUser = async (req, res) => {
         res.status(500).json({ message: error.message, success: false });
     }
 };
+const forgotPassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
 
-module.exports = { register, login, getAllUser, deleteUser, walletUpdate, changeWelcomeBonus };
+        if (!email || !newPassword) {
+            return res.status(400).json({ message: "Email and new password are required." });
+        }
+
+        const user = await Users.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        user.password = newPassword; // ⚠️ In production, hash password
+        await user.save();
+
+        res.status(200).json({ message: "Password updated successfully." });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { register, login, getAllUser, deleteUser, walletUpdate, changeWelcomeBonus ,forgotPassword};
